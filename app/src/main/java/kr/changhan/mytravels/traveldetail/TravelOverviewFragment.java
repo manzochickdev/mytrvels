@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.base.MyConst;
 import kr.changhan.mytravels.entity.Travel;
@@ -31,6 +33,7 @@ public class TravelOverviewFragment extends TravelDetailBaseFragment {
         }
     };
     ArrayList<TravelBaseEntity> list;
+    TravelOverviewAdapter travelOverviewAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,12 +44,14 @@ public class TravelOverviewFragment extends TravelDetailBaseFragment {
         LiveData<List<TravelBaseEntity>> plans = mViewModel.getAllPlans(travelId);
         LiveData<List<TravelBaseEntity>> diaries = mViewModel.getAllDiaries(travelId);
         LiveData<List<TravelBaseEntity>> expense = mViewModel.getAllExpense(travelId);
+        travelOverviewAdapter = new TravelOverviewAdapter(getContext());
         liveDataMerger.addSource(plans, observer);
         liveDataMerger.addSource(diaries,observer);
         liveDataMerger.addSource(expense,observer);
         liveDataMerger.observe(this, new Observer<List<TravelBaseEntity>>() {
             @Override
             public void onChanged(List<TravelBaseEntity> travelBaseEntities) {
+                travelOverviewAdapter.setTravelBaseEntities(travelBaseEntities);
                 Log.d("OK", "onChanged: "+liveDataMerger.getValue().size());
             }
         });
@@ -58,6 +63,9 @@ public class TravelOverviewFragment extends TravelDetailBaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_travel_overview, container, false);
+        RecyclerView rev = view.findViewById(R.id.recyclerview);
+        rev.setAdapter(travelOverviewAdapter);
+        rev.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
         return view;
     }
 

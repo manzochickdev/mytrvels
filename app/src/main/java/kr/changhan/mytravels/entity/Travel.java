@@ -11,6 +11,15 @@ public class Travel extends TravelBaseEntity {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String endDt;
+    String thumb;
+
+    public String getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
 
     public Travel(String title) {
         this.title = title;

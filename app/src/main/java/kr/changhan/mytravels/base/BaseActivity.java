@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -272,6 +273,26 @@ public class BaseActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
+        }
+        return null;
+    }
+
+    protected Uri saveThumb(Bitmap bitmap){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "IMG_" + timeStamp;
+        final File rootDir = new File(getFilesDir(), "travelThumb");
+        if (!rootDir.exists()) rootDir.mkdirs();
+        File image = new File(rootDir, imageFileName);
+        FileOutputStream imgFos = null;
+        try {
+            imgFos = new FileOutputStream(image);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, imgFos);
+            imgFos.flush();
+            return Uri.fromFile(image);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
