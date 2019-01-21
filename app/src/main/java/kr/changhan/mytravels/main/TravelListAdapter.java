@@ -1,9 +1,11 @@
 package kr.changhan.mytravels.main;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -59,6 +61,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
         holder.titleTxt.setText(item.getTitle());
         holder.placeTxt.setText(item.getPlaceName() + " / " + item.getPlaceAddr());
         holder.dateTxt.setText(item.getDateTimeText() + " ~ " + item.getEndDtText());
+        holder.placeIv.setImageURI(Uri.parse(item.getThumb()));
     }
 
     @NonNull
@@ -72,6 +75,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
         private final TextView titleTxt;
         private final TextView placeTxt;
         private final TextView dateTxt;
+        private final ImageView placeIv;
 
         private TravelViewHolder(View v) {
             super(v);
@@ -101,6 +105,7 @@ public class TravelListAdapter extends RecyclerView.Adapter<TravelListAdapter.Tr
             titleTxt = v.findViewById(R.id.title_txt);
             placeTxt = v.findViewById(R.id.place_txt);
             dateTxt = v.findViewById(R.id.date_txt);
+            placeIv = v.findViewById(R.id.place_iv);
         }
     }
 }

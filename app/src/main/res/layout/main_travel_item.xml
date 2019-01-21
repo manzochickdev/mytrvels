@@ -7,12 +7,25 @@
     app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true">
 
+    <ImageView
+        android:scaleType="centerCrop"
+        android:src="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/place_iv"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/gradient_white"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_default">
 
         <TextView
+            android:layout_marginTop="60dp"
             android:id="@+id/title_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -21,6 +21,7 @@ import kr.changhan.mytravels.database.AppDatabase;
 import kr.changhan.mytravels.entity.HotPlace;
 import kr.changhan.mytravels.entity.Travel;
 import kr.changhan.mytravels.utils.MyDate;
+import kr.changhan.mytravels.utils.MyString;
 
 public class TravelRepository {
     private static final String TAG = TravelRepository.class.getSimpleName();
@@ -118,6 +119,10 @@ public class TravelRepository {
         @Override
         protected Void doInBackground(final Travel... params) {
             for (Travel travel : params) {
+                if  (MyString.isNotEmpty(travel.getThumb())){
+                    File file = new File((Uri.parse(travel.getThumb()).getPath()));
+                    file.delete();
+                }
                 TravelRepository.INSTANCE.deleteTravelDirectory(travel.getId());
             }
             mAsyncTaskDao.delete(params);

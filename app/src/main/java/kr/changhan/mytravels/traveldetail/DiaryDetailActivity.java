@@ -19,7 +19,9 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,8 +61,11 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
     private ImageView mToolbarImg;
     private FloatingActionButton mFab;
     private RecyclerView mImageRv;
+
+
     private ArrayList<String> imgPath;
     private DiaryImageListAdapter diaryImageListAdapter;
+    private Gson gson;
 
     private boolean mInEditMode;
     private TravelDiaryViewModel mViewModel;
@@ -89,6 +94,10 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(this);
 
+        gson = new Gson();
+        imgPath = new ArrayList<>();
+        diaryImageListAdapter = new DiaryImageListAdapter(DiaryDetailActivity.this,imgPath);
+
         mViewModel = ViewModelProviders.of(this).get(TravelDiaryViewModel.class);
         mViewModel.currentItem.observe(this, new Observer<TravelDiary>() {
             @Override
@@ -99,9 +108,12 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
                 mTimeTxt.setText(item.getDateTimeHourMinText());
                 mPlaceTxt.setText(item.getPlaceName());
                 mDescTxt.setText(item.getDesc());
+
                 if (MyString.isNotEmpty(item.getImgUri())) {
-                    mToolbarImg.setVisibility(View.VISIBLE);
-                    mToolbarImg.setImageURI(Uri.parse(item.getImgUri()));
+                    imgPath.addAll(gson.fromJson(item.getImgUri(),ArrayList.class));
+//                    mToolbarImg.setVisibility(View.VISIBLE);
+//                    mToolbarImg.setImageURI(Uri.parse(item.getImgUri()));
+
                 }
             }
         });
@@ -126,10 +138,10 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
         Log.d(TAG, "onCreate: requestItem=" + requestItem);
         mViewModel.currentItem.setValue(requestItem);
 
-        imgPath = new ArrayList<>();
-        diaryImageListAdapter = new DiaryImageListAdapter(DiaryDetailActivity.this,imgPath);
+
+
         mImageRv.setAdapter(diaryImageListAdapter);
-        mImageRv.setLayoutManager(new GridLayoutManager(DiaryDetailActivity.this,5,LinearLayoutManager.VERTICAL,false));
+        mImageRv.setLayoutManager(new GridLayoutManager(DiaryDetailActivity.this,5,RecyclerView.VERTICAL,false));
 
         setEditMode(true);
     }
@@ -249,12 +261,8 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
                 //item.setImgUri(cropImagePath.toString());
                 imgPath.add(thumbUri.toString());
                 diaryImageListAdapter.notifyDataSetChanged();
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("imgPath",imgPath);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                String imgUri = gson.toJson(imgPath,ArrayList.class);
+                item.setImgUri(imgUri);
                 //item.setThumbUri(thumbUri.toString());
                 mViewModel.currentItem.setValue(item);
             }

@@ -3,6 +3,9 @@ package kr.changhan.mytravels;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,13 +13,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlacePhotoMetadata;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
+import com.google.android.gms.location.places.PlacePhotoResponse;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -39,7 +54,9 @@ public class EditTravelActivity extends BaseActivity
     private EditText mStartDtEt;
     private EditText mEndDtEt;
     private EditText mPlaceEt;
+    private ImageView mPlaceIv;
     private Travel mTravel;
+    private boolean thumbChange;
     /**
      * Whether it is a new mode or a edit mode.
      **/
@@ -64,6 +81,8 @@ public class EditTravelActivity extends BaseActivity
         mPlaceEt = findViewById(R.id.place_et);
         findViewById(R.id.place_layout).setOnClickListener(this);
         mPlaceEt.setOnClickListener(this);
+        mPlaceIv = findViewById(R.id.place_iv);
+
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(MyConst.REQKEY_TRAVEL)) {
             mTravel = (Travel) getIntent().getExtras().getSerializable(MyConst.REQKEY_TRAVEL);
             mPlaceEt.setText(mTravel.getPlaceName());
@@ -76,6 +95,7 @@ public class EditTravelActivity extends BaseActivity
             mStartDtEt.setText(mTravel.getDateTimeText());
             mEndDt = mTravel.getEndDtLong();
             mEndDtEt.setText(mTravel.getEndDtText());
+            mPlaceIv.setImageURI(Uri.parse(mTravel.getThumb()));
         }
 
         mTravelViewModel = ViewModelProviders.of(this).get(TravelViewModel.class);
@@ -150,11 +170,36 @@ public class EditTravelActivity extends BaseActivity
         switch (requestCode) {
             case MyConst.REQCD_PLACE_AUTOCOMPLETE: {
                 mPlace = PlaceAutocomplete.getPlace(this, data);
+                getPlacePhoto(mPlace.getId());
                 Log.i(TAG, "Place: " + mPlace);
+                thumbChange = true;
                 mPlaceEt.setText(mPlace.getName());
             }
             break;
         }
+    }
+
+    private void getPlacePhoto(String id) {
+        final GeoDataClient mGeoDataClient = Places.getGeoDataClient(EditTravelActivity.this);
+        Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(id);
+        photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                // Get the list of photos.
+                PlacePhotoMetadataResponse photos = task.getResult();
+                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+                Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
+                photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                        PlacePhotoResponse photo = task.getResult();
+                        Bitmap bitmap = photo.getBitmap();
+                        mPlaceIv.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -193,6 +238,16 @@ public class EditTravelActivity extends BaseActivity
             mTravel.setPlaceLat(mPlace.getLatLng().latitude);
             mTravel.setPlaceLng(mPlace.getLatLng().longitude);
         }
+
+        Bitmap bitmap =((BitmapDrawable) mPlaceIv.getDrawable()).getBitmap();
+        if (bitmap!=null && thumbChange){
+            if (MyString.isNotEmpty(mTravel.getThumb())){
+                File file = new File((Uri.parse(mTravel.getThumb()).getPath()));
+                file.delete();
+            }
+            mTravel.setThumb(saveThumb(bitmap).toString());
+        }
+
         if (mInEditMode) {
             // update a existing item
             mTravelViewModel.update(mTravel);
