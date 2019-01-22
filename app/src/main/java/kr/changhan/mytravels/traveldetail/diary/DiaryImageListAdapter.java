@@ -16,10 +16,15 @@ import kr.changhan.mytravels.R;
 public class DiaryImageListAdapter extends RecyclerView.Adapter<DiaryImageListAdapter.ViewHolder>{
     Context context;
     ArrayList<String> imgPath;
+    IDiary iDiary;
 
     public DiaryImageListAdapter(Context context, ArrayList<String> imgPath) {
         this.context = context;
         this.imgPath = imgPath;
+    }
+
+    public void setiDiary(IDiary iDiary) {
+        this.iDiary = iDiary;
     }
 
     @NonNull
@@ -40,10 +45,18 @@ public class DiaryImageListAdapter extends RecyclerView.Adapter<DiaryImageListAd
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView removeIv;
         ImageView image;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
+            removeIv = itemView.findViewById(R.id.remove_iv);
+            removeIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (iDiary != null) iDiary.onImageMoveListener(getAdapterPosition());
+                }
+            });
         }
     }
 }

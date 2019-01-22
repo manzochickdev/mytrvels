@@ -86,9 +86,10 @@ public class TravelDetailActivity extends BaseActivity {
         bundle.putLong(MyConst.REQKEY_TRAVEL_ID,travelId);
         TravelOverviewFragment travelOverviewFragment = new TravelOverviewFragment();
         travelOverviewFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(R.id.main_content,travelOverviewFragment,TravelOverviewFragment.class.getSimpleName())
-                .addToBackStack(TravelOverviewFragment.class.getSimpleName())
-                .commit();
+        //todo addfragment here
+//        getSupportFragmentManager().beginTransaction().add(R.id.main_content,travelOverviewFragment,TravelOverviewFragment.class.getSimpleName())
+//                .addToBackStack(TravelOverviewFragment.class.getSimpleName())
+//                .commit();
 
 
         mViewModel = ViewModelProviders.of(this).get(TravelDetailViewModel.class);

@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,8 +29,21 @@ public class TravelOverviewAdapter extends RecyclerView.Adapter<TravelOverviewAd
         notifyDataSetChanged();
     }
 
-    private ArrayList<TravelBaseEntity> sort(ArrayList<TravelBaseEntity> travelBaseEntities) {
-        return travelBaseEntities;
+    private ArrayList<TravelBaseEntity> sort(ArrayList<TravelBaseEntity> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            for (int j = 0; j < list.size() - 1 - i; j++) {
+                if (list.get(j).getDateTimeLong() > list.get(j + 1).getDateTimeLong()) {
+
+                    TravelBaseEntity t1 = list.get(j);
+                    TravelBaseEntity t2 = list.get(j + 1);
+                    list.set(j, t2);
+                    list.set(j + 1, t1);
+                    //todo koko
+                }
+            }
+        }
+        list.size();
+        return list;
     }
 
     @NonNull

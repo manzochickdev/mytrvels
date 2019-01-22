@@ -79,18 +79,18 @@ public class TravelDiaryListAdapter extends PagedListAdapter<TravelDiary, Travel
                     }
                 }
             });
-            if (mTravelListItemClickListener != null) {
-                v.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (mTravelListItemClickListener != null) {
                         mTravelListItemClickListener.onListItemClick(v
                                 , getAdapterPosition()
                                 , getItem(getAdapterPosition())
                                 , true);
-                        return true;
                     }
-                });
-            }
+                    return true;
+                }
+            });
             thumbnail = v.findViewById(R.id.thumbnail);
             descTxt = v.findViewById(R.id.desc_txt);
         }

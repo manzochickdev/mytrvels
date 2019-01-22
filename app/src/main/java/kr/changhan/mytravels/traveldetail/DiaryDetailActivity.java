@@ -3,7 +3,6 @@ package kr.changhan.mytravels.traveldetail;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,10 +20,6 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -34,7 +29,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.base.BaseActivity;
@@ -43,13 +37,14 @@ import kr.changhan.mytravels.entity.TravelBaseEntity;
 import kr.changhan.mytravels.entity.TravelDiary;
 import kr.changhan.mytravels.main.TravelListItemClickListener;
 import kr.changhan.mytravels.traveldetail.diary.DiaryImageListAdapter;
+import kr.changhan.mytravels.traveldetail.diary.IDiary;
 import kr.changhan.mytravels.traveldetail.diary.TravelDiaryListAdapter;
 import kr.changhan.mytravels.traveldetail.diary.TravelDiaryViewModel;
 import kr.changhan.mytravels.utils.MyDate;
 import kr.changhan.mytravels.utils.MyItemTouchHelper;
 import kr.changhan.mytravels.utils.MyString;
 
-public class DiaryDetailActivity extends BaseActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, TravelListItemClickListener, MyItemTouchHelper.MyItemTouchHelperListner {
+public class DiaryDetailActivity extends BaseActivity implements IDiary, View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, TravelListItemClickListener, MyItemTouchHelper.MyItemTouchHelperListner {
     private static final String TAG = DiaryDetailActivity.class.getSimpleName();
 
     private final Calendar mCalendar = MyDate.getCurrentCalendar();
@@ -97,6 +92,7 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
         gson = new Gson();
         imgPath = new ArrayList<>();
         diaryImageListAdapter = new DiaryImageListAdapter(DiaryDetailActivity.this,imgPath);
+        diaryImageListAdapter.setiDiary(this);
 
         mViewModel = ViewModelProviders.of(this).get(TravelDiaryViewModel.class);
         mViewModel.currentItem.observe(this, new Observer<TravelDiary>() {
@@ -111,6 +107,7 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
 
                 if (MyString.isNotEmpty(item.getImgUri())) {
                     imgPath.addAll(gson.fromJson(item.getImgUri(),ArrayList.class));
+                    diaryImageListAdapter.notifyDataSetChanged();
 //                    mToolbarImg.setVisibility(View.VISIBLE);
 //                    mToolbarImg.setImageURI(Uri.parse(item.getImgUri()));
 
@@ -166,6 +163,10 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
             mPlaceTxt.setText(null);
             mToolbarImg.setVisibility(View.INVISIBLE);
             mFab.setImageResource(R.drawable.ic_add_black_24dp);
+
+            imgPath = new ArrayList<>();
+            diaryImageListAdapter.notifyDataSetChanged();
+
             TravelDiary item = new TravelDiary();
             item.setId(0);
             item.setTravelId(mViewModel.currentItem.getValue().getTravelId());
@@ -210,6 +211,9 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
                 }
                 TravelDiary item = mViewModel.currentItem.getValue();
                 setValuesFromEditText(item);
+                String imgUri = gson.toJson(imgPath, ArrayList.class);
+                item.setImgUri(imgUri);
+
                 if (MyString.isEmpty(item.getDesc()) && MyString.isEmpty(item.getImgUri())) {
                     Snackbar.make(v, R.string.diary_edit_warn, Snackbar.LENGTH_LONG).show();
                     return;
@@ -261,10 +265,8 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
                 //item.setImgUri(cropImagePath.toString());
                 imgPath.add(thumbUri.toString());
                 diaryImageListAdapter.notifyDataSetChanged();
-                String imgUri = gson.toJson(imgPath,ArrayList.class);
-                item.setImgUri(imgUri);
                 //item.setThumbUri(thumbUri.toString());
-                mViewModel.currentItem.setValue(item);
+                //mViewModel.currentItem.setValue(item);
             }
             break;
             case MyConst.REQCD_PLACE_PICKER: {
@@ -369,5 +371,11 @@ public class DiaryDetailActivity extends BaseActivity implements View.OnClickLis
         item.setId(-99);
         item.setTravelId(mViewModel.currentItem.getValue().getTravelId());
         mViewModel.updateItem(item);
+    }
+
+    @Override
+    public void onImageMoveListener(int position) {
+        imgPath.remove(position);
+        diaryImageListAdapter.notifyDataSetChanged();
     }
 }

@@ -297,6 +297,11 @@ public class BaseActivity extends AppCompatActivity {
         return null;
     }
 
+    protected void deleteImage(String uriString) {
+        File file = new File((Uri.parse(uriString).getPath()));
+        file.delete();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

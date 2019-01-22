@@ -3,7 +3,16 @@
     android:orientation="vertical" android:layout_width="50dp"
     android:layout_height="50dp">
     <ImageView
+        android:layout_margin="4dp"
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ImageView
+        android:tint="@android:color/white"
+        android:layout_gravity="right"
+        android:id="@+id/remove_iv"
+        android:src="@drawable/ic_cancel_black_24dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
 </FrameLayout>

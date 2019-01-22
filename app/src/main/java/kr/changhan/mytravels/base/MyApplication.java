@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import com.facebook.stetho.Stetho;
+
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.utils.MyString;
 
@@ -29,6 +31,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Stetho.initializeWithDefaults(this);
         Log.d(TAG, "onCreate");
 
         String[] itemKey = getResources().getStringArray(R.array.currency_key);
