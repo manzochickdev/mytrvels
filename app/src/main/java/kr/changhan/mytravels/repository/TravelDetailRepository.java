@@ -64,7 +64,7 @@ public class TravelDetailRepository {
         return new LivePagedListBuilder<>(mTravelPlanDao.getPlansOnDate(travelId, dateTime), 20).build();
     }
 
-    public LiveData<List<TravelBaseEntity>> getAllPlans(long travelId){
+    public LiveData<List<TravelPlan>> getAllPlans(long travelId){
         return mTravelPlanDao.getAllPlans(travelId);
     }
 
@@ -90,7 +90,7 @@ public class TravelDetailRepository {
         return new LivePagedListBuilder<>(mTravelExpenseDao.getExpensesOnDate(travelId, dateTime), 20).build();
     }
 
-    public LiveData<List<TravelBaseEntity>> getAllExpense(long travelId){
+    public LiveData<List<TravelExpense>> getAllExpense(long travelId){
         return mTravelExpenseDao.getAllExpense(travelId);
     }
 
@@ -121,7 +121,7 @@ public class TravelDetailRepository {
         return new LivePagedListBuilder<>(mTravelDiaryDao.getDiariesOnDate(travelId, dateTime), 20).build();
     }
 
-    public LiveData<List<TravelBaseEntity>> getAllDiaries(long travelId){
+    public LiveData<List<TravelDiary>> getAllDiaries(long travelId){
         return mTravelDiaryDao.getAllDiaries(travelId);
     }
 

@@ -2,6 +2,7 @@ package kr.changhan.mytravels.traveldetail;
 
 import android.app.Application;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,13 +74,13 @@ public class TravelDetailViewModel extends AndroidViewModel {
         return mTravelPlanList;
     }
 
-    public LiveData<List<TravelBaseEntity>> getAllPlans(long id){
+    public LiveData<List<TravelPlan>> getAllPlans(long id){
         return mRepository.getAllPlans(id);
     }
-    public LiveData<List<TravelBaseEntity>> getAllDiaries(long id){
+    public LiveData<List<TravelDiary>> getAllDiaries(long id){
         return mRepository.getAllDiaries(id);
     }
-    public LiveData<List<TravelBaseEntity>> getAllExpense(long id){
+    public LiveData<List<TravelExpense>> getAllExpense(long id){
         return mRepository.getAllExpense(id);
     }
 

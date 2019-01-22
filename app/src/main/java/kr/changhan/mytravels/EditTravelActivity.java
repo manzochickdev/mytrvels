@@ -95,7 +95,10 @@ public class EditTravelActivity extends BaseActivity
             mStartDtEt.setText(mTravel.getDateTimeText());
             mEndDt = mTravel.getEndDtLong();
             mEndDtEt.setText(mTravel.getEndDtText());
-            mPlaceIv.setImageURI(Uri.parse(mTravel.getThumb()));
+            if (MyString.isNotEmpty(mTravel.getThumb())){
+                mPlaceIv.setVisibility(View.VISIBLE);
+                mPlaceIv.setImageURI(Uri.parse(mTravel.getThumb()));
+            }
         }
 
         mTravelViewModel = ViewModelProviders.of(this).get(TravelViewModel.class);
@@ -195,6 +198,7 @@ public class EditTravelActivity extends BaseActivity
                     public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
                         PlacePhotoResponse photo = task.getResult();
                         Bitmap bitmap = photo.getBitmap();
+                        mPlaceIv.setVisibility(View.VISIBLE);
                         mPlaceIv.setImageBitmap(bitmap);
                     }
                 });

@@ -17,6 +17,7 @@ public class DiaryImageListAdapter extends RecyclerView.Adapter<DiaryImageListAd
     Context context;
     ArrayList<String> imgPath;
     IDiary iDiary;
+    String mode;
 
     public DiaryImageListAdapter(Context context, ArrayList<String> imgPath) {
         this.context = context;
@@ -25,6 +26,10 @@ public class DiaryImageListAdapter extends RecyclerView.Adapter<DiaryImageListAd
 
     public void setiDiary(IDiary iDiary) {
         this.iDiary = iDiary;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
     @NonNull
@@ -51,6 +56,7 @@ public class DiaryImageListAdapter extends RecyclerView.Adapter<DiaryImageListAd
             super(itemView);
             image = itemView.findViewById(R.id.image);
             removeIv = itemView.findViewById(R.id.remove_iv);
+            if (mode.equals("View")) removeIv.setVisibility(View.GONE);
             removeIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

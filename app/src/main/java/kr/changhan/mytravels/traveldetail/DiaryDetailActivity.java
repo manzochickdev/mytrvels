@@ -93,6 +93,7 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
         imgPath = new ArrayList<>();
         diaryImageListAdapter = new DiaryImageListAdapter(DiaryDetailActivity.this,imgPath);
         diaryImageListAdapter.setiDiary(this);
+        diaryImageListAdapter.setMode("Edit");
 
         mViewModel = ViewModelProviders.of(this).get(TravelDiaryViewModel.class);
         mViewModel.currentItem.observe(this, new Observer<TravelDiary>() {
@@ -264,6 +265,7 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
                 }
                 //item.setImgUri(cropImagePath.toString());
                 imgPath.add(thumbUri.toString());
+                item.setThumbUri(imgPath.get(0));
                 diaryImageListAdapter.notifyDataSetChanged();
                 //item.setThumbUri(thumbUri.toString());
                 //mViewModel.currentItem.setValue(item);

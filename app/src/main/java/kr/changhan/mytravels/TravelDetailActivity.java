@@ -42,6 +42,7 @@ public class TravelDetailActivity extends BaseActivity {
             if (travel == null) return;
             mToolbarLayout.setTitle(travel.getTitle());
             mSubtitle.setText(travel.getPlaceName() + "\n" + travel.getDateTimeText() + "~" + travel.getEndDtText());
+            mAppBar.setBackground(Drawable.createFromPath(Uri.parse(travel.getThumb()).getPath()));
         }
     };
     private TravelDetailViewModel mViewModel;
@@ -87,9 +88,9 @@ public class TravelDetailActivity extends BaseActivity {
         TravelOverviewFragment travelOverviewFragment = new TravelOverviewFragment();
         travelOverviewFragment.setArguments(bundle);
         //todo addfragment here
-//        getSupportFragmentManager().beginTransaction().add(R.id.main_content,travelOverviewFragment,TravelOverviewFragment.class.getSimpleName())
-//                .addToBackStack(TravelOverviewFragment.class.getSimpleName())
-//                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_content,travelOverviewFragment,TravelOverviewFragment.class.getSimpleName())
+                .addToBackStack(TravelOverviewFragment.class.getSimpleName())
+                .commit();
 
 
         mViewModel = ViewModelProviders.of(this).get(TravelDetailViewModel.class);
@@ -99,18 +100,18 @@ public class TravelDetailActivity extends BaseActivity {
         mViewModel.recentDiaryImage.observe(this, new Observer<TravelDiary>() {
             @Override
             public void onChanged(TravelDiary item) {
-                if (item == null) {
-                    if (((MyApplication) getApplication()).getMainImageUri() != null) {
-                        Uri uri = ((MyApplication) getApplication()).getMainImageUri();
-                        if (!uri.equals(Uri.EMPTY)) {
-                            mAppBar.setBackground(Drawable.createFromPath(uri.getPath()));
-                        }
-                    }
-                    return;
-                }
-                if (MyString.isNotEmpty(item.getImgUri())) {
-                    mAppBar.setBackground(Drawable.createFromPath(Uri.parse(item.getImgUri()).getPath()));
-                }
+//                if (item == null) {
+//                    if (((MyApplication) getApplication()).getMainImageUri() != null) {
+//                        Uri uri = ((MyApplication) getApplication()).getMainImageUri();
+//                        if (!uri.equals(Uri.EMPTY)) {
+//                            mAppBar.setBackground(Drawable.createFromPath(uri.getPath()));
+//                        }
+//                    }
+//                    return;
+//                }
+//                if (MyString.isNotEmpty(item.getImgUri())) {
+//                    mAppBar.setBackground(Drawable.createFromPath(Uri.parse(item.getImgUri()).getPath()));
+//                }
             }
         });
 

@@ -28,7 +28,7 @@ public interface TravelExpenseDao {
     DataSource.Factory<Integer, TravelExpense> getExpensesOnCurrency(long travelId, String currency);
 
     @Query("SELECT * from travel_expense WHERE deleteYn=0 and travelId=:travelId")
-    LiveData<List<TravelBaseEntity>> getAllExpense(long travelId);
+    LiveData<List<TravelExpense>> getAllExpense(long travelId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TravelExpense... items);

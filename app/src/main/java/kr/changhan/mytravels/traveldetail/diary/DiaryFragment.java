@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.base.BaseActivity;
@@ -67,7 +68,7 @@ public class DiaryFragment extends TravelDetailBaseFragment implements TravelLis
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_diary, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
         recyclerView.setAdapter(mListAdapter);
         return rootView;
     }

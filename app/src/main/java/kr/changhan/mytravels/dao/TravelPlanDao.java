@@ -25,7 +25,7 @@ public interface TravelPlanDao {
     DataSource.Factory<Integer, TravelPlan> getPlansOnDate(long travelId, String dateTime);
 
     @Query("SELECT * from travel_plan WHERE deleteYn=0 and travelId=:travelId")
-    LiveData<List<TravelBaseEntity>> getAllPlans(long travelId);
+    LiveData<List<TravelPlan>> getAllPlans(long travelId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TravelPlan... items);
