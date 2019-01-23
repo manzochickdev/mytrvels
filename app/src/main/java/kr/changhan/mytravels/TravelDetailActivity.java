@@ -17,7 +17,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import kr.changhan.mytravels.base.BaseActivity;
-import kr.changhan.mytravels.base.MyApplication;
 import kr.changhan.mytravels.base.MyConst;
 import kr.changhan.mytravels.entity.Travel;
 import kr.changhan.mytravels.entity.TravelDiary;
@@ -25,7 +24,6 @@ import kr.changhan.mytravels.traveldetail.SectionsPagerAdapter;
 import kr.changhan.mytravels.traveldetail.TravelDetailBaseFragment;
 import kr.changhan.mytravels.traveldetail.TravelDetailViewModel;
 import kr.changhan.mytravels.traveldetail.TravelOverviewFragment;
-import kr.changhan.mytravels.utils.MyString;
 
 public class TravelDetailActivity extends BaseActivity {
     private static final String TAG = TravelDetailActivity.class.getSimpleName();
@@ -88,9 +86,9 @@ public class TravelDetailActivity extends BaseActivity {
         TravelOverviewFragment travelOverviewFragment = new TravelOverviewFragment();
         travelOverviewFragment.setArguments(bundle);
         //todo addfragment here
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_content,travelOverviewFragment,TravelOverviewFragment.class.getSimpleName())
-                .addToBackStack(TravelOverviewFragment.class.getSimpleName())
-                .commit();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.main_content,travelOverviewFragment,TravelOverviewFragment.class.getSimpleName())
+//                .addToBackStack(TravelOverviewFragment.class.getSimpleName())
+//                .commit();
 
 
         mViewModel = ViewModelProviders.of(this).get(TravelDetailViewModel.class);
