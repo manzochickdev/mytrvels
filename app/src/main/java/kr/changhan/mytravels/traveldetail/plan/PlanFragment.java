@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.base.MyConst;
+import kr.changhan.mytravels.discovery.DiscoveryActivity;
 import kr.changhan.mytravels.entity.Travel;
 import kr.changhan.mytravels.entity.TravelBaseEntity;
 import kr.changhan.mytravels.entity.TravelPlan;
@@ -75,7 +77,19 @@ public class PlanFragment extends TravelDetailBaseFragment implements TravelList
         View rootView = inflater.inflate(R.layout.fragment_plan, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mListAdapter.setHeader("");
         recyclerView.setAdapter(mListAdapter);
+
+        TextView discoveryTv = rootView.findViewById(R.id.discovery_tv);
+        discoveryTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DiscoveryActivity.class);
+                intent.putExtra("lat", mViewModel.getTravel().getValue().getPlaceLat());
+                intent.putExtra("lng", mViewModel.getTravel().getValue().getPlaceLng());
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 

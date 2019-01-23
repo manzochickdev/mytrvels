@@ -1,27 +1,8 @@
 package kr.changhan.mytravels.traveldetail;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import kr.changhan.mytravels.R;
-import kr.changhan.mytravels.base.MyConst;
-import kr.changhan.mytravels.entity.Travel;
-import kr.changhan.mytravels.entity.TravelBaseEntity;
-import kr.changhan.mytravels.entity.TravelDiary;
-import kr.changhan.mytravels.entity.TravelExpense;
-import kr.changhan.mytravels.entity.TravelPlan;
-import kr.changhan.mytravels.utils.GetMarker;
-import kr.changhan.mytravels.utils.MyString;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,8 +13,22 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import kr.changhan.mytravels.R;
+import kr.changhan.mytravels.base.MyConst;
+import kr.changhan.mytravels.entity.TravelBaseEntity;
+import kr.changhan.mytravels.entity.TravelDiary;
+import kr.changhan.mytravels.entity.TravelExpense;
+import kr.changhan.mytravels.entity.TravelPlan;
+import kr.changhan.mytravels.utils.GetMarker;
 
 public class TravelTimelineMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private RecyclerView itemRv;
@@ -43,8 +38,7 @@ public class TravelTimelineMapActivity extends AppCompatActivity implements OnMa
     LatLng baseLatlng;
     private static final int DEFAULT_ZOOM = 13;
     List travelItem;
-    List<List> travelList;
-    HashMap<String,String> markerInfo;
+    TravelTimelineMapAdapter travelTimelineMapAdapter;
 
 
     @Override
@@ -57,13 +51,13 @@ public class TravelTimelineMapActivity extends AppCompatActivity implements OnMa
         mapFragment.getMapAsync(this);
 
         long travelId = getIntent().getLongExtra(MyConst.REQKEY_TRAVEL_ID,0);
-        markerInfo = new HashMap<>();
+
         mViewModel = ViewModelProviders.of(TravelTimelineMapActivity.this).get(TravelDetailViewModel.class);
         travelItem = new ArrayList();
 
 
         itemRv = findViewById(R.id.item_rv);
-        TravelTimelineMapAdapter travelTimelineMapAdapter = new TravelTimelineMapAdapter(TravelTimelineMapActivity.this);
+        travelTimelineMapAdapter = new TravelTimelineMapAdapter(TravelTimelineMapActivity.this);
         itemRv.setAdapter(travelTimelineMapAdapter);
         itemRv.setLayoutManager(new LinearLayoutManager(TravelTimelineMapActivity.this,RecyclerView.HORIZONTAL,false));
 
@@ -110,41 +104,17 @@ public class TravelTimelineMapActivity extends AppCompatActivity implements OnMa
 
     }
 
-    private void plotMarker(List travelItem) {
-//        for (Object o :travelItem){
-//            TravelBaseEntity travel = (TravelBaseEntity)o;
-//            if (markerInfo.get(travel.getPlaceId())!=null){
-//                if (o instanceof TravelDiary){
-//                    if (MyString.isNotEmpty(((TravelDiary)o).getThumbUri())){
-//                        markerInfo.put(travel.getPlaceId(),((TravelDiary)o).getThumbUri());
-//                    }
-//                }
-//                else if (o instanceof TravelPlan){
-//                    markerInfo.put(travel.getPlaceId(),"TravelPlan");
-//                }
-//                else if (o instanceof TravelExpense) markerInfo.put(travel.getPlaceId(),"TravelExpense");
-//            }
-//        }
-//
-//        for ()
-
-        for (Object o : travelItem){
+    private void plotMarker(List t) {
+        if (t == null) return;
+        for (Object o : t) {
             TravelBaseEntity travel = (TravelBaseEntity)o;
             if (travel.getPlaceId()!=null){
                 LatLng latLng = new LatLng(travel.getPlaceLat(),travel.getPlaceLng());
                 googleMap.addMarker(new MarkerOptions().position(latLng).title(travel.getPlaceAddr())
-                .icon(BitmapDescriptorFactory.fromBitmap(GetMarker.from(o,TravelTimelineMapActivity.this).getMarker())));
+                        .icon(BitmapDescriptorFactory.fromBitmap(GetMarker.from(o, TravelTimelineMapActivity.this).getMarker())));
             }
         }
-    }
 
-    private void handleTravelItem(List travelItem) {
-        travelList = new ArrayList<>();
-        String placeId="";
-        for (Object o :travelItem){
-            TravelBaseEntity travel = (TravelBaseEntity)o;
-
-        }
     }
 
     @Override
@@ -166,6 +136,8 @@ public class TravelTimelineMapActivity extends AppCompatActivity implements OnMa
                 }
             }
         }
+        travelTimelineMapAdapter.setTravelItem(list);
+
         return true;
     }
 }

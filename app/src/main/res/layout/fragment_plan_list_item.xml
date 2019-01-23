@@ -1,82 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
-    app:cardUseCompatPadding="true">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <TextView
+        android:layout_marginLeft="-4dp"
+        android:layout_alignLeft="@id/content_layout"
+        android:id="@+id/header_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="aaaa"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:visibility="gone" />
+
+
+    <FrameLayout
+        android:id="@+id/content_layout"
+        android:layout_below="@id/header_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_default">
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/header_txt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="aaaa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/date_txt"
-            android:layout_width="0dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/left_line_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/place_txt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header_txt"
-            tools:text="@string/input_date_hint" />
+            android:layout_margin="@dimen/margin_default">
 
-        <TextView
-            android:id="@+id/place_txt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_map_black_24dp"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/date_txt"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="place" />
+            <TextView
+                android:id="@+id/date_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/place_txt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/input_date_hint" />
 
-        <TextView
-            android:id="@+id/title_txt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintEnd_toStartOf="@id/ratingBar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_txt"
-            tools:text="title" />
+            <TextView
+                android:id="@+id/place_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_map_black_24dp"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/date_txt"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="place" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="@android:style/Widget.Material.Light.RatingBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:isIndicator="false"
-            android:numStars="5"
-            android:stepSize="0.5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/title_txt"
-            app:layout_constraintTop_toTopOf="@id/title_txt" />
+            <TextView
+                android:id="@+id/title_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintEnd_toStartOf="@id/ratingBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_txt"
+                tools:text="title" />
 
-        <TextView
-            android:id="@+id/desc_txt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_txt"
-            tools:text="desc" />
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@android:style/Widget.Material.Light.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:stepSize="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/title_txt"
+                app:layout_constraintTop_toTopOf="@id/title_txt" />
+
+            <TextView
+                android:id="@+id/desc_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_txt"
+                tools:text="desc" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <ImageView
+        android:layout_below="@id/header_txt"
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/circle_shape"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+</RelativeLayout>

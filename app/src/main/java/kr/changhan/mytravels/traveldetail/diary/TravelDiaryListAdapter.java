@@ -1,11 +1,9 @@
 package kr.changhan.mytravels.traveldetail.diary;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -16,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.entity.TravelDiary;
@@ -56,7 +54,7 @@ public class TravelDiaryListAdapter extends PagedListAdapter<TravelDiary, Travel
             DiaryImageListAdapter diaryImageListAdapter = new DiaryImageListAdapter(context,imgPath);
             diaryImageListAdapter.setMode("View");
             holder.imageRv.setAdapter(diaryImageListAdapter);
-            holder.imageRv.setLayoutManager(new GridLayoutManager(context,5,RecyclerView.VERTICAL,false));
+            holder.imageRv.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         }
         String desc = item.getDateTimeMinText();
         if (MyString.isNotEmpty(item.getPlaceName())) desc += "\n " + item.getPlaceName();
