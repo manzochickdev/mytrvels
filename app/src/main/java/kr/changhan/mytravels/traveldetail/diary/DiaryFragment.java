@@ -113,7 +113,7 @@ public class DiaryFragment extends TravelDetailBaseFragment implements TravelLis
             intent.putExtra(MyConst.BACKGROUND, travel.getThumb());
             startActivity(intent);
         } else {
-            ((BaseActivity) getActivity()).showImageViewer(item.getImgUri(), item.getDateTimeMinText(), item.getPlaceAddr(), item.getDesc(), entity);
+            //((BaseActivity) getActivity()).showImageViewer(item.getImgUri(), item.getDateTimeMinText(), item.getPlaceAddr(), item.getDesc(), entity);
         }
     }
 
