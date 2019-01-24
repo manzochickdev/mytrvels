@@ -44,11 +44,36 @@
         app:layout_constraintTop_toBottomOf="@+id/time_txt"
         app:srcCompat="@drawable/ic_camera_black_24dp" />
 
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@+id/camera_btn"
+        app:layout_constraintStart_toEndOf="@id/camera_btn"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:checked="false"
+            android:buttonTint="@android:color/black"
+            android:layout_marginLeft="40dp"
+            android:id="@+id/checkbox"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center" />
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="-8dp"
+            app:layout_constraintLeft_toRightOf="@id/checkbox"
+            android:text="Share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/image_btn"
         style="@android:style/Widget.Material.ImageButton"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:onClick="onClick"

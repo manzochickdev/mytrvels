@@ -1,4 +1,5 @@
 <resources>
+    <string name="facebook_app_id">2222414104683932</string>
     <string name="app_name">My Travels</string>
     <string name="action_new_travel">New Travel</string>
     <string name="action_sort">Sort</string>

@@ -259,7 +259,7 @@ public class PlanDetailActivity extends BaseActivity implements TravelListItemCl
                 Log.d(TAG, "item=" + item);
                 mViewModel.insertItem(item);
                 setEditMode(false);
-                notificationDailyPlan();
+                //notificationDailyPlan();
 
             }
             break;

@@ -2,6 +2,8 @@ package kr.changhan.mytravels.traveldetail;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,6 +34,7 @@ import kr.changhan.mytravels.utils.GetMarker;
 
 public class TravelTimelineMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private RecyclerView itemRv;
+    private TextView shareTv;
     TravelDetailViewModel mViewModel;
     MediatorLiveData<List> liveDataMerger;
     GoogleMap googleMap;
@@ -39,6 +42,7 @@ public class TravelTimelineMapActivity extends AppCompatActivity implements OnMa
     private static final int DEFAULT_ZOOM = 13;
     List travelItem;
     TravelTimelineMapAdapter travelTimelineMapAdapter;
+    FrameLayout frameLayout;
 
 
     @Override
@@ -46,7 +50,7 @@ public class TravelTimelineMapActivity extends AppCompatActivity implements OnMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel_timeline_map);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -56,6 +60,8 @@ public class TravelTimelineMapActivity extends AppCompatActivity implements OnMa
         travelItem = new ArrayList();
 
 
+        frameLayout = findViewById(R.id.main_container);
+        shareTv = findViewById(R.id.share_iv);
         itemRv = findViewById(R.id.item_rv);
         travelTimelineMapAdapter = new TravelTimelineMapAdapter(TravelTimelineMapActivity.this);
         itemRv.setAdapter(travelTimelineMapAdapter);
@@ -102,7 +108,9 @@ public class TravelTimelineMapActivity extends AppCompatActivity implements OnMa
             }}
         });
 
+
     }
+
 
     private void plotMarker(List t) {
         if (t == null) return;

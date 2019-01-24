@@ -3,17 +3,24 @@ package kr.changhan.mytravels.traveldetail;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.material.appbar.AppBarLayout;
@@ -22,6 +29,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -58,6 +66,7 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
     private ImageView mToolbarImg;
     private FloatingActionButton mFab;
     private RecyclerView mImageRv;
+    private CheckBox checkBox;
 
 
     private ArrayList<String> imgPath;
@@ -85,6 +94,7 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
         mDescTxt = findViewById(R.id.desc_txt);
         mToolbarImg = findViewById(R.id.toolbar_image);
         mImageRv = findViewById(R.id.image_rv);
+        checkBox = findViewById(R.id.checkbox);
 
         mDateTxt.setText(MyDate.getDateString(mCalendar.getTime()));
         mTimeTxt.setText(MyDate.getTimeMinString(mCalendar.getTime()));
@@ -113,8 +123,6 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
 
                 if (MyString.isNotEmpty(item.getImgUri())) {
                     imgPath.addAll(gson.fromJson(item.getImgUri(),ArrayList.class));
-//                    mToolbarImg.setVisibility(View.VISIBLE);
-//                    mToolbarImg.setImageURI(Uri.parse(item.getImgUri()));
                     if (basePath.size() == 0) {
                         basePath.addAll(imgPath);
                     }
@@ -236,8 +244,15 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
                     Snackbar.make(v, R.string.diary_edit_warn, Snackbar.LENGTH_LONG).show();
                     return;
                 }
+                if (imgPath.size() > 0) {
+
+                }
                 item.setDateTime(mCalendar.getTimeInMillis());
                 Log.d(TAG, "item=" + item);
+
+                if (checkBox.isChecked()) {
+                    sharePhoto(imgPath, "caption here");
+                }
                 mViewModel.insertItem(item);
                 setEditMode(false);
             }
@@ -245,6 +260,33 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
         }
     }
 
+    public void sharePhoto(ArrayList<String> path, String caption) {
+        ArrayList<SharePhoto> photos = new ArrayList<>();
+        for (String s : path) {
+            Uri uri = Uri.parse(s);
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                SharePhoto photo = new SharePhoto.Builder()
+                        .setBitmap(bitmap)
+                        .setCaption(caption)
+                        .build();
+                photos.add(photo);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        ShareContent.Builder builder = new SharePhotoContent.Builder();
+        for (SharePhoto s : photos) {
+            ((SharePhotoContent.Builder) builder).addPhoto(s);
+        }
+        ShareContent content = ((SharePhotoContent.Builder) builder).build();
+
+        ShareDialog.show(DiaryDetailActivity.this, content);
+    }
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         mCalendar.set(year, month, dayOfMonth);
@@ -280,12 +322,10 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
                     Snackbar.make(getWindow().getDecorView().getRootView(), "Failed to load a image.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                //item.setImgUri(cropImagePath.toString());
+
                 imgPath.add(thumbUri.toString());
                 item.setThumbUri(imgPath.get(0));
                 diaryImageListAdapter.notifyDataSetChanged();
-                //item.setThumbUri(thumbUri.toString());
-                //mViewModel.currentItem.setValue(item);
             }
             break;
             case MyConst.REQCD_PLACE_PICKER: {

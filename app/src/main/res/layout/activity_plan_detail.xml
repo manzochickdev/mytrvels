@@ -81,11 +81,10 @@
 
     <com.google.android.material.card.MaterialCardView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_gravity="bottom"
+        android:layout_gravity="top"
         android:id="@+id/desc_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         app:cardCornerRadius="8dp"
         app:cardUseCompatPadding="true">
 
