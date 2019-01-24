@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +26,7 @@ import kr.changhan.mytravels.main.TravelListItemClickListener;
 import kr.changhan.mytravels.traveldetail.PlanDetailActivity;
 import kr.changhan.mytravels.traveldetail.TravelDetailBaseFragment;
 import kr.changhan.mytravels.utils.MyDate;
+import kr.changhan.mytravels.weather.WeatherActivity;
 
 public class PlanFragment extends TravelDetailBaseFragment implements TravelListItemClickListener {
     private static final String TAG = PlanFragment.class.getSimpleName();
@@ -80,11 +80,22 @@ public class PlanFragment extends TravelDetailBaseFragment implements TravelList
         mListAdapter.setHeader("");
         recyclerView.setAdapter(mListAdapter);
 
-        TextView discoveryTv = rootView.findViewById(R.id.discovery_tv);
-        discoveryTv.setOnClickListener(new View.OnClickListener() {
+
+        rootView.findViewById(R.id.discovery_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), DiscoveryActivity.class);
+                intent.putExtra(MyConst.KEY_TITLE, mViewModel.getTravel().getValue().getPlaceName());
+                intent.putExtra("lat", mViewModel.getTravel().getValue().getPlaceLat());
+                intent.putExtra("lng", mViewModel.getTravel().getValue().getPlaceLng());
+                startActivity(intent);
+            }
+        });
+
+        rootView.findViewById(R.id.weather_iv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WeatherActivity.class);
                 intent.putExtra("lat", mViewModel.getTravel().getValue().getPlaceLat());
                 intent.putExtra("lng", mViewModel.getTravel().getValue().getPlaceLng());
                 startActivity(intent);
@@ -113,6 +124,7 @@ public class PlanFragment extends TravelDetailBaseFragment implements TravelList
         item.setDateTime(MyDate.getCurrentTime());
         Intent intent = new Intent(getContext(), PlanDetailActivity.class);
         intent.putExtra(MyConst.REQKEY_TRAVEL, item);
+        intent.putExtra(MyConst.BACKGROUND, travel.getThumb());
         startActivity(intent);
     }
 
@@ -121,9 +133,15 @@ public class PlanFragment extends TravelDetailBaseFragment implements TravelList
         TravelPlan item = (TravelPlan) entity;
         Log.d(TAG, "onListItemClick: item=" + item);
         Log.d(TAG, "onListItemClick: longClick=" + longClick);
+
+        Travel travel = mViewModel.getTravel().getValue();
+        Log.d(TAG, "requestAddItem: travel=" + travel);
+        if (travel == null) return;
+
         if (!longClick) return;
         Intent intent = new Intent(getContext(), PlanDetailActivity.class);
         intent.putExtra(MyConst.REQKEY_TRAVEL, item);
+        intent.putExtra(MyConst.BACKGROUND, travel.getThumb());
         startActivity(intent);
     }
 }

@@ -3,6 +3,8 @@ package kr.changhan.mytravels.traveldetail;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +18,7 @@ import android.widget.TimePicker;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -226,6 +229,13 @@ public class ExpenseDetailActivity extends BaseActivity implements TravelListIte
         touchHelper.attachToRecyclerView(recyclerView);
 
         TravelExpense requestItem = (TravelExpense) getIntent().getExtras().getSerializable(MyConst.REQKEY_TRAVEL);
+
+        //set background
+        AppBarLayout mAppBar = findViewById(R.id.app_bar);
+        String background = getIntent().getStringExtra(MyConst.BACKGROUND);
+        if (background != null)
+            mAppBar.setBackground(Drawable.createFromPath(Uri.parse(background).getPath()));
+        
         Log.d(TAG, "onCreate: requestItem=" + requestItem);
         mViewModel.currentItem.setValue(requestItem);
 

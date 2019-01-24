@@ -1,5 +1,6 @@
 package kr.changhan.mytravels;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import kr.changhan.mytravels.base.BaseActivity;
 import kr.changhan.mytravels.base.MyConst;
 import kr.changhan.mytravels.entity.Travel;
 import kr.changhan.mytravels.entity.TravelDiary;
+import kr.changhan.mytravels.overview.OverviewActivity;
 import kr.changhan.mytravels.traveldetail.SectionsPagerAdapter;
 import kr.changhan.mytravels.traveldetail.TravelDetailBaseFragment;
 import kr.changhan.mytravels.traveldetail.TravelDetailViewModel;
@@ -31,8 +33,9 @@ public class TravelDetailActivity extends BaseActivity {
     private SectionsPagerAdapter mViewPagerAdapter;
     private ViewPager mViewPager;
     private CollapsingToolbarLayout mToolbarLayout;
-    private TextView mSubtitle;
+    private TextView mSubtitle, mOverview;
     private AppBarLayout mAppBar;
+    private String background;
     private final Observer<Travel> mTravelObserver = new Observer<Travel>() {
         @Override
         public void onChanged(Travel travel) {
@@ -77,9 +80,10 @@ public class TravelDetailActivity extends BaseActivity {
         });
 
         mToolbarLayout = findViewById(R.id.toolbar_layout);
+        mOverview = findViewById(R.id.overview_txt);
         mSubtitle = findViewById(R.id.subtitle_txt);
 
-        long travelId = getIntent().getLongExtra(MyConst.REQKEY_TRAVEL_ID, 0);
+        final long travelId = getIntent().getLongExtra(MyConst.REQKEY_TRAVEL_ID, 0);
         Log.d(TAG, "onCreate: travelId=" + travelId);
         Bundle bundle = new Bundle();
         bundle.putLong(MyConst.REQKEY_TRAVEL_ID,travelId);
@@ -110,6 +114,16 @@ public class TravelDetailActivity extends BaseActivity {
 //                if (MyString.isNotEmpty(item.getImgUri())) {
 //                    mAppBar.setBackground(Drawable.createFromPath(Uri.parse(item.getImgUri()).getPath()));
 //                }
+            }
+        });
+
+        mOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Travel travel = mViewModel.getTravel().getValue();
+                Intent intent = new Intent(TravelDetailActivity.this, OverviewActivity.class);
+                intent.putExtra(MyConst.REQKEY_TRAVEL, travel);
+                startActivity(intent);
             }
         });
 

@@ -7,8 +7,7 @@
 
 
     <TextView
-        android:layout_marginLeft="-4dp"
-        android:layout_alignLeft="@id/content_layout"
+        android:layout_marginLeft="@dimen/margin_default"
         android:id="@+id/header_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,16 +16,12 @@
         android:textSize="24sp"
         android:visibility="gone" />
 
-
-    <FrameLayout
-        android:id="@+id/content_layout"
+    <com.google.android.material.card.MaterialCardView
         android:layout_below="@id/header_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/left_line_background">
-
+        app:cardCornerRadius="8dp"
+        app:cardUseCompatPadding="true">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,12 +87,5 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
-
-    <ImageView
-        android:layout_below="@id/header_txt"
-        android:layout_marginLeft="8dp"
-        android:src="@drawable/circle_shape"
-        android:layout_width="20dp"
-        android:layout_height="20dp" />
+    </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

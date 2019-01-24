@@ -78,15 +78,20 @@ public class TravelTimelineMapAdapter extends RecyclerView.Adapter<TravelTimelin
                 if (MyString.isNotEmpty(item.getImgUri())) {
                     Gson gson = new Gson();
                     ArrayList<String> imgPath = gson.fromJson(item.getImgUri(), ArrayList.class);
-                    DiaryImageListAdapter diaryImageListAdapter = new DiaryImageListAdapter(context, imgPath);
+                    DiaryImageListAdapter diaryImageListAdapter = new DiaryImageListAdapter(context);
+                    diaryImageListAdapter.setImgPath(imgPath);
                     diaryImageListAdapter.setMode("View");
                     holder.imageRv.setAdapter(diaryImageListAdapter);
                     holder.imageRv.setLayoutManager(new GridLayoutManager(context, 5, RecyclerView.VERTICAL, false));
                 }
-                String desc = item.getDateTimeMinText();
-                if (MyString.isNotEmpty(item.getPlaceName())) desc += "\n " + item.getPlaceName();
-                if (MyString.isNotEmpty(item.getDesc())) desc += "\n " + item.getDesc();
-                holder.descTxt.setText(desc);
+                holder.dateTxt.setText(item.getDateTimeMinText());
+                if (MyString.isNotEmpty(item.getPlaceName())) {
+                    holder.placeTxt.setText(item.getPlaceName());
+                    holder.placeTxt.setVisibility(View.VISIBLE);
+                } else {
+                    holder.placeTxt.setVisibility(View.GONE);
+                }
+                if (MyString.isNotEmpty(item.getDesc())) holder.descTxt.setText(item.getDesc());
             }
             break;
             case 2: {
@@ -151,6 +156,8 @@ public class TravelTimelineMapAdapter extends RecyclerView.Adapter<TravelTimelin
                 case 1: {
                     descTxt = v.findViewById(R.id.desc_txt);
                     imageRv = v.findViewById(R.id.image_rv);
+                    dateTxt = v.findViewById(R.id.date_txt);
+                    placeTxt = v.findViewById(R.id.place_txt);
                 }
                 break;
                 case 2: {

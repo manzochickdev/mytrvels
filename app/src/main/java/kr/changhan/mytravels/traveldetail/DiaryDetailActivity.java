@@ -3,6 +3,7 @@ package kr.changhan.mytravels.traveldetail;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.TimePicker;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,8 +29,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.base.BaseActivity;
@@ -59,6 +61,7 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
 
 
     private ArrayList<String> imgPath;
+    private ArrayList<String> basePath;
     private DiaryImageListAdapter diaryImageListAdapter;
     private Gson gson;
 
@@ -91,7 +94,8 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
 
         gson = new Gson();
         imgPath = new ArrayList<>();
-        diaryImageListAdapter = new DiaryImageListAdapter(DiaryDetailActivity.this,imgPath);
+        basePath = new ArrayList<>();
+        diaryImageListAdapter = new DiaryImageListAdapter(DiaryDetailActivity.this);
         diaryImageListAdapter.setiDiary(this);
         diaryImageListAdapter.setMode("Edit");
 
@@ -106,13 +110,16 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
                 mPlaceTxt.setText(item.getPlaceName());
                 mDescTxt.setText(item.getDesc());
 
+
                 if (MyString.isNotEmpty(item.getImgUri())) {
                     imgPath.addAll(gson.fromJson(item.getImgUri(),ArrayList.class));
-                    diaryImageListAdapter.notifyDataSetChanged();
 //                    mToolbarImg.setVisibility(View.VISIBLE);
 //                    mToolbarImg.setImageURI(Uri.parse(item.getImgUri()));
-
-                }
+                    if (basePath.size() == 0) {
+                        basePath.addAll(imgPath);
+                    }
+                } else imgPath = new ArrayList<>();
+                diaryImageListAdapter.setImgPath(imgPath);
             }
         });
 
@@ -125,7 +132,7 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
             }
         });
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setLayoutManager(new LinearLayoutManager(DiaryDetailActivity.this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(mListAdapter);
         // attach MyItemTouchHelper
         ItemTouchHelper.Callback callback = new MyItemTouchHelper(this);
@@ -133,13 +140,20 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
         touchHelper.attachToRecyclerView(recyclerView);
 
         TravelDiary requestItem = (TravelDiary) getIntent().getExtras().getSerializable(MyConst.REQKEY_TRAVEL);
+
+        //set background
+        AppBarLayout mAppBar = findViewById(R.id.app_bar);
+        String background = getIntent().getStringExtra(MyConst.BACKGROUND);
+        if (background != null)
+            mAppBar.setBackground(Drawable.createFromPath(Uri.parse(background).getPath()));
+
+
         Log.d(TAG, "onCreate: requestItem=" + requestItem);
         mViewModel.currentItem.setValue(requestItem);
 
 
-
         mImageRv.setAdapter(diaryImageListAdapter);
-        mImageRv.setLayoutManager(new GridLayoutManager(DiaryDetailActivity.this,5,RecyclerView.VERTICAL,false));
+        mImageRv.setLayoutManager(new LinearLayoutManager(DiaryDetailActivity.this, RecyclerView.HORIZONTAL, false));
 
         setEditMode(true);
     }
@@ -214,6 +228,9 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
                 setValuesFromEditText(item);
                 String imgUri = gson.toJson(imgPath, ArrayList.class);
                 item.setImgUri(imgUri);
+
+                basePath.removeAll(imgPath);
+                for (String s : basePath) deleteImage(s);
 
                 if (MyString.isEmpty(item.getDesc()) && MyString.isEmpty(item.getImgUri())) {
                     Snackbar.make(v, R.string.diary_edit_warn, Snackbar.LENGTH_LONG).show();
@@ -302,7 +319,7 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
             mViewModel.currentItem.setValue(item);
             setEditMode(true);
         } else {
-            showImageViewer(item.getImgUri(), item.getDateTimeText(), item.getPlaceAddr(), item.getDesc(), entity);
+            //showImageViewer(item.getImgUri(), item.getDateTimeText(), item.getPlaceAddr(), item.getDesc(), entity);
         }
     }
 
@@ -379,5 +396,10 @@ public class DiaryDetailActivity extends BaseActivity implements IDiary, View.On
     public void onImageMoveListener(int position) {
         imgPath.remove(position);
         diaryImageListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onImageShowListener(int position, ArrayList<String> imgPath, TravelDiary iDiary) {
+
     }
 }

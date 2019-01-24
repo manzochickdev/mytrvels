@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -46,6 +47,7 @@ import androidx.fragment.app.FragmentTransaction;
 import kr.changhan.mytravels.BuildConfig;
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.entity.TravelBaseEntity;
+import kr.changhan.mytravels.entity.TravelDiary;
 import kr.changhan.mytravels.utils.ImageViewerDialog;
 import kr.changhan.mytravels.utils.MyString;
 
@@ -382,6 +384,23 @@ public class BaseActivity extends AppCompatActivity {
         dialog.setArguments(b);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         dialog.show(ft, ImageViewerDialog.TAG);
+    }
+
+    public void showImageViewer(int position, ArrayList<String> imgPath, TravelDiary travelDiary) {
+        Bundle b = new Bundle();
+        b.putInt(MyConst.POSITION, position);
+        b.putStringArrayList(MyConst.LIST_IMAGE, imgPath);
+        b.putString(MyConst.KEY_TITLE, travelDiary.getPlaceName());
+        b.putString(MyConst.KEY_SUBTITLE, travelDiary.getDateTimeMinText());
+        b.putString(MyConst.KEY_DESC, travelDiary.getDesc());
+        if (travelDiary != null) {
+            b.putSerializable(MyConst.REQKEY_TRAVEL, (TravelBaseEntity) travelDiary);
+        }
+        ImageViewerDialog dialog = new ImageViewerDialog();
+        dialog.setArguments(b);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        dialog.show(ft, ImageViewerDialog.TAG);
+
     }
 
     protected void postRequestPermissionsResult(final int reqCd, final boolean result) {

@@ -1,12 +1,13 @@
 package kr.changhan.mytravels.traveldetail;
 
 import android.app.DatePickerDialog;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,6 +21,7 @@ import android.widget.TimePicker;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,7 +41,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.MainActivity;
 import kr.changhan.mytravels.R;
-import kr.changhan.mytravels.TravelDetailActivity;
 import kr.changhan.mytravels.base.BaseActivity;
 import kr.changhan.mytravels.base.MyConst;
 import kr.changhan.mytravels.entity.TravelBaseEntity;
@@ -63,6 +64,7 @@ public class PlanDetailActivity extends BaseActivity implements TravelListItemCl
     private RatingBar mRatingBar;
     private EditText mDescTxt;
     private FloatingActionButton mFab;
+    private AppBarLayout mAppBar;
 
     private boolean mInEditMode;
     private TravelPlanViewModel mViewModel;
@@ -79,6 +81,7 @@ public class PlanDetailActivity extends BaseActivity implements TravelListItemCl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        mAppBar = findViewById(R.id.app_bar);
         mDateTxt = findViewById(R.id.date_txt);
         mTimeTxt = findViewById(R.id.time_txt);
         mPlaceTxt = findViewById(R.id.place_txt);
@@ -146,6 +149,9 @@ public class PlanDetailActivity extends BaseActivity implements TravelListItemCl
 
 
         TravelPlan requestItem = (TravelPlan) getIntent().getExtras().getSerializable(MyConst.REQKEY_TRAVEL);
+        String background = getIntent().getStringExtra(MyConst.BACKGROUND);
+        if (background != null)
+            mAppBar.setBackground(Drawable.createFromPath(Uri.parse(background).getPath()));
         Log.d(TAG, "onCreate: requestItem=" + requestItem);
         mViewModel.currentItem.setValue(requestItem);
 

@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="80dp"
-    android:layout_height="80dp">
+    android:layout_height="80dp"
+    android:layout_marginLeft="-4dp">
     <ImageView
         android:layout_margin="4dp"
         android:id="@+id/image"

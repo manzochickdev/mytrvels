@@ -28,6 +28,9 @@ public class MyConst {
 
     public static final Map<String, MyKeyValue> CURRENCY_CODE = new HashMap<>();
     public static final Map<String, MyKeyValue> BUDGET_CODE = new HashMap<>();
+    public static final String BACKGROUND = "BACKGROUND";
+    public static final String POSITION = "POSITION";
+    public static final String LIST_IMAGE = "LIST_IMAGE";
 
     public static MyKeyValue getCurrencyCode(String key) {
         if (CURRENCY_CODE.containsKey(key)) return CURRENCY_CODE.get(key);

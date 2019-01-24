@@ -15,9 +15,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.viewpager.widget.ViewPager;
 import kr.changhan.mytravels.R;
 import kr.changhan.mytravels.base.BaseActivity;
 import kr.changhan.mytravels.base.MyConst;
@@ -36,6 +39,10 @@ public class ImageViewerDialog extends DialogFragment {
     private String subtitle;
     private String desc;
     private TravelBaseEntity entity;
+    private ViewPager viewPager;
+
+    private ArrayList<String> imgPath;
+    private int position;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,8 @@ public class ImageViewerDialog extends DialogFragment {
         subtitle = b.getString(MyConst.KEY_SUBTITLE, null);
         desc = b.getString(MyConst.KEY_DESC, null);
         entity = (TravelBaseEntity) b.getSerializable(MyConst.REQKEY_TRAVEL);
+        imgPath = b.getStringArrayList(MyConst.LIST_IMAGE);
+        position = b.getInt(MyConst.POSITION);
         if (MyString.isNotEmpty(img)) imgUri = Uri.parse(img);
     }
 
@@ -68,6 +77,13 @@ public class ImageViewerDialog extends DialogFragment {
         ((TextView) rootView.findViewById(R.id.title_txt)).setText(title);
         ((TextView) rootView.findViewById(R.id.subtitle_txt)).setText(subtitle);
         ((TextView) rootView.findViewById(R.id.desc_txt)).setText(desc);
+
+
+        viewPager = rootView.findViewById(R.id.view_pager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getContext(), imgPath);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(position);
+
         if (imgUri != null) {
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageURI(imgUri);

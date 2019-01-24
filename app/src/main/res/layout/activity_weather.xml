@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/weather_background"
+    android:orientation="vertical"
+    tools:context=".weather.WeatherActivity">
+
+    <RelativeLayout
+        android:id="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <ImageView
+            android:id="@+id/imvBack"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerVertical="true"
+            android:padding="15dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:tint="@android:color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/info_weather"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp">
+
+            <TextView
+                android:id="@+id/tvNamePlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:text="Ha Noi" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvNamePlace"
+                android:layout_marginTop="6dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="22/01/2019" />
+
+            <RelativeLayout
+                android:id="@+id/root"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDate">
+
+                <TextView
+                    android:id="@+id/tvTemperatureMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="70sp"
+                    android:textStyle="bold"
+                    tools:text="20" />
+
+                <TextView
+                    android:id="@+id/tvO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8sp"
+                    android:layout_toRightOf="@id/tvTemperatureMax"
+                    android:text="o"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/tvO"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/tvO"
+                    android:text="C"
+                    android:textColor="@android:color/white"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/root"
+                android:layout_alignLeft="@id/root">
+
+                <TextView
+                    android:id="@+id/tvTemperatureMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="40sp"
+                    tools:text="16" />
+
+                <TextView
+                    android:id="@+id/tvOMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/tvTemperatureMin"
+                    android:text="o"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/tvOMin"
+                    android:layout_marginLeft="6dp"
+                    android:layout_toRightOf="@id/tvOMin"
+                    android:text="C"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp">
+
+            <ImageView
+                android:id="@+id/imvCloud"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                tools:src="@drawable/ic_cloud_queue_black_24dp" />
+
+            <TextView
+                android:id="@+id/tvMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imvCloud"
+                android:layout_centerHorizontal="true"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Cloudy" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWeather"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/info_weather"
+        android:padding="6dp" />
+
+</RelativeLayout>

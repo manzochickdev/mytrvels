@@ -4,14 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,6 +26,7 @@ import kr.changhan.mytravels.utils.MyString;
 public class TravelOverviewAdapter extends RecyclerView.Adapter<TravelOverviewAdapter.ViewHolder>{
     Context context;
     List travelBaseEntities;
+    String header = "";
 
     public TravelOverviewAdapter(Context context) {
         this.context = context;
@@ -53,7 +52,6 @@ public class TravelOverviewAdapter extends RecyclerView.Adapter<TravelOverviewAd
                 }
             }
         }
-        list.size();
         return list;
     }
 
@@ -77,6 +75,8 @@ public class TravelOverviewAdapter extends RecyclerView.Adapter<TravelOverviewAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        TravelBaseEntity i = (TravelBaseEntity) travelBaseEntities.get(position);
+        holder.headerTxt.setVisibility(View.GONE);
         switch (holder.getItemViewType()){
             case 0:{
                 TravelPlan item = (TravelPlan) travelBaseEntities.get(position);
@@ -96,15 +96,20 @@ public class TravelOverviewAdapter extends RecyclerView.Adapter<TravelOverviewAd
                 if (MyString.isNotEmpty(item.getImgUri())){
                     Gson gson = new Gson();
                     ArrayList<String> imgPath = gson.fromJson(item.getImgUri(),ArrayList.class);
-                    DiaryImageListAdapter diaryImageListAdapter = new DiaryImageListAdapter(context,imgPath);
+                    DiaryImageListAdapter diaryImageListAdapter = new DiaryImageListAdapter(context);
+                    diaryImageListAdapter.setImgPath(imgPath);
                     diaryImageListAdapter.setMode("View");
                     holder.imageRv.setAdapter(diaryImageListAdapter);
                     holder.imageRv.setLayoutManager(new GridLayoutManager(context,5,RecyclerView.VERTICAL,false));
                 }
-                String desc = item.getDateTimeMinText();
-                if (MyString.isNotEmpty(item.getPlaceName())) desc += "\n " + item.getPlaceName();
-                if (MyString.isNotEmpty(item.getDesc())) desc += "\n " + item.getDesc();
-                holder.descTxt.setText(desc);
+                holder.dateTxt.setText(item.getDateTimeMinText());
+                if (MyString.isNotEmpty(item.getPlaceName())) {
+                    holder.placeTxt.setText(item.getPlaceName());
+                    holder.placeTxt.setVisibility(View.VISIBLE);
+                } else {
+                    holder.placeTxt.setVisibility(View.GONE);
+                }
+                if (MyString.isNotEmpty(item.getDesc())) holder.descTxt.setText(item.getDesc());
             }break;
             case 2:{
                 TravelExpense item = (TravelExpense) travelBaseEntities.get(position);
@@ -168,6 +173,9 @@ public class TravelOverviewAdapter extends RecyclerView.Adapter<TravelOverviewAd
                 case 1:{
                      descTxt = v.findViewById(R.id.desc_txt);
                      imageRv = v.findViewById(R.id.image_rv);
+                    headerTxt = v.findViewById(R.id.header_txt);
+                    dateTxt = v.findViewById(R.id.date_txt);
+                    placeTxt = v.findViewById(R.id.place_txt);
                 }break;
                 case 2:{
                      dateTxt = v.findViewById(R.id.date_txt);
@@ -177,6 +185,7 @@ public class TravelOverviewAdapter extends RecyclerView.Adapter<TravelOverviewAd
                      amount = v.findViewById(R.id.amount_txt);
                      currency = v.findViewById(R.id.currency_txt);
                      type = v.findViewById(R.id.type_txt);
+                    headerTxt = v.findViewById(R.id.header_txt);
                 }break;
             }
         }

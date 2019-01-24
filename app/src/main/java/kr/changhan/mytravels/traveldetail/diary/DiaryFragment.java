@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.R;
@@ -28,7 +28,7 @@ import kr.changhan.mytravels.traveldetail.DiaryDetailActivity;
 import kr.changhan.mytravels.traveldetail.TravelDetailBaseFragment;
 import kr.changhan.mytravels.utils.MyDate;
 
-public class DiaryFragment extends TravelDetailBaseFragment implements TravelListItemClickListener {
+public class DiaryFragment extends TravelDetailBaseFragment implements TravelListItemClickListener, IDiary {
     private static final String TAG = DiaryFragment.class.getSimpleName();
     public static final int TITLE_ID = R.string.title_frag_dairy;
     private TravelDiaryListAdapter mListAdapter;
@@ -55,6 +55,7 @@ public class DiaryFragment extends TravelDetailBaseFragment implements TravelLis
         super.onCreate(savedInstanceState);
         mListAdapter = new TravelDiaryListAdapter(getContext());
         mListAdapter.setListItemClickListener(this);
+        mListAdapter.setiDiary(this);
         mViewModel.getTravelDiaryList().observe(this, new Observer<PagedList<TravelDiary>>() {
             @Override
             public void onChanged(PagedList<TravelDiary> items) {
@@ -93,6 +94,7 @@ public class DiaryFragment extends TravelDetailBaseFragment implements TravelLis
         item.setDateTime(MyDate.getCurrentTime());
         Intent intent = new Intent(getContext(), DiaryDetailActivity.class);
         intent.putExtra(MyConst.REQKEY_TRAVEL, item);
+        intent.putExtra(MyConst.BACKGROUND, travel.getThumb());
         startActivity(intent);
     }
 
@@ -102,12 +104,27 @@ public class DiaryFragment extends TravelDetailBaseFragment implements TravelLis
         Log.d(TAG, "onListItemClick: item=" + item);
         Log.d(TAG, "onListItemClick: longClick=" + longClick);
 
+        Travel travel = mViewModel.getTravel().getValue();
+        if (travel == null) return;
+
         if (longClick) {
             Intent intent = new Intent(getContext(), DiaryDetailActivity.class);
             intent.putExtra(MyConst.REQKEY_TRAVEL, item);
+            intent.putExtra(MyConst.BACKGROUND, travel.getThumb());
             startActivity(intent);
         } else {
             ((BaseActivity) getActivity()).showImageViewer(item.getImgUri(), item.getDateTimeMinText(), item.getPlaceAddr(), item.getDesc(), entity);
         }
     }
+
+    @Override
+    public void onImageMoveListener(int position) {
+
+    }
+
+    @Override
+    public void onImageShowListener(int position, ArrayList<String> imgPath, TravelDiary travelDiary) {
+        ((BaseActivity) getActivity()).showImageViewer(position, imgPath, travelDiary);
+    }
+
 }

@@ -16,6 +16,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="VND" />
 
+    <View
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/currency"
+        android:background="@color/colorPrimary"
+        android:id="@+id/view_holder"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"></View>
+
     <TextView
         android:id="@+id/budget"
         android:layout_width="0dp"
@@ -24,7 +34,7 @@
         android:textAlignment="viewEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/currency"
+        app:layout_constraintTop_toBottomOf="@id/view_holder"
         tools:text="99,999,999,999" />
 
     <TextView

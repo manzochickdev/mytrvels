@@ -109,6 +109,7 @@ public class MainActivity extends BaseActivity implements TravelListItemClickLis
         mTravelViewModel.getAllTravels().observe(this, mTravelObserver);
         mTravelViewModel.setTravelSort(((MyApplication) getApplication()).getTravelSort());
 
+
         mAppBarLayout = findViewById(R.id.app_bar);
         // set main image
         if (((MyApplication) getApplication()).getMainImageUri() != null) {

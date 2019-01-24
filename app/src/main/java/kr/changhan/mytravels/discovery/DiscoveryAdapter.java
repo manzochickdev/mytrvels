@@ -27,16 +27,26 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.View
     Context context;
     ArrayList<Discovery> discoveries;
     LayoutInflater layoutInflater;
+    int clicked = -1;
+    OnItemClickListener onItemClickListener;
 
-    public DiscoveryAdapter(Context context) {
+    public interface OnItemClickListener {
+        void onItemClick(Discovery discovery);
+    }
+
+    public DiscoveryAdapter(Context context, ArrayList<Discovery> discoveries) {
         this.context = context;
-        if (discoveries == null) discoveries = new ArrayList<>();
+        this.discoveries = discoveries;
         layoutInflater = LayoutInflater.from(context);
     }
 
     public void setDiscoveries(ArrayList<Discovery> discoveries) {
         this.discoveries = discoveries;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -70,6 +80,7 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.View
                 }
             }
         });
+        holder.placeNameTv.setText(discovery.name);
         holder.placeAddressTv.setText(discovery.vinicity);
     }
 
@@ -80,7 +91,7 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.View
 
     protected class ViewHolder extends RecyclerView.ViewHolder {
         ImageView placeIv;
-        TextView placeNameTv, placeAddressTv;
+        TextView placeNameTv, placeAddressTv, detailsTv, planTv;
 
         public ViewHolder(@NonNull View v) {
             super(v);
@@ -88,6 +99,14 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<DiscoveryAdapter.View
             placeIv = v.findViewById(R.id.place_iv);
             placeNameTv = v.findViewById(R.id.place_name_tv);
             placeAddressTv = v.findViewById(R.id.place_address_tv);
+            detailsTv = v.findViewById(R.id.details_tv);
+            planTv = v.findViewById(R.id.plan_tv);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(discoveries.get(getAdapterPosition()));
+                }
+            });
         }
     }
 }

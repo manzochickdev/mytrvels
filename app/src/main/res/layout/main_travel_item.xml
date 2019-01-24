@@ -25,18 +25,19 @@
         android:layout_margin="@dimen/margin_default">
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_marginTop="60dp"
             android:id="@+id/title_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="title" />
 
         <TextView
+            android:textColor="@android:color/white"
             android:id="@+id/place_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,6 +47,7 @@
             tools:text="place" />
 
         <TextView
+            android:textColor="@android:color/white"
             android:id="@+id/date_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

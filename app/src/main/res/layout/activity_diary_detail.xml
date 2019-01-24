@@ -23,6 +23,12 @@
             app:titleEnabled="false"
             app:toolbarId="@+id/toolbar">
 
+            <View
+                android:alpha="0.5"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></View>
+
             <ImageView
                 android:id="@+id/toolbar_image"
                 android:layout_width="match_parent"

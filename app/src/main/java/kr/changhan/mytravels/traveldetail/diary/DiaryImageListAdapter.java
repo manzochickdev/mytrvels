@@ -12,16 +12,26 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import kr.changhan.mytravels.R;
+import kr.changhan.mytravels.entity.TravelDiary;
 
 public class DiaryImageListAdapter extends RecyclerView.Adapter<DiaryImageListAdapter.ViewHolder>{
     Context context;
     ArrayList<String> imgPath;
     IDiary iDiary;
     String mode;
+    TravelDiary travelDiary;
 
-    public DiaryImageListAdapter(Context context, ArrayList<String> imgPath) {
+    public DiaryImageListAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setImgPath(ArrayList<String> imgPath) {
         this.imgPath = imgPath;
+        notifyDataSetChanged();
+    }
+
+    public void setTravelDiary(TravelDiary travelDiary) {
+        this.travelDiary = travelDiary;
     }
 
     public void setiDiary(IDiary iDiary) {
@@ -63,6 +73,17 @@ public class DiaryImageListAdapter extends RecyclerView.Adapter<DiaryImageListAd
                     if (iDiary != null) iDiary.onImageMoveListener(getAdapterPosition());
                 }
             });
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mode.equals("View")) {
+                        if (iDiary != null)
+                            iDiary.onImageShowListener(getAdapterPosition(), imgPath, travelDiary);
+                    }
+                }
+            });
+
+
         }
     }
 }

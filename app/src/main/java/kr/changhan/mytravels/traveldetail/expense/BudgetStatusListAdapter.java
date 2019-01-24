@@ -20,7 +20,7 @@ public class BudgetStatusListAdapter extends RecyclerView.Adapter<BudgetStatusLi
     private final LayoutInflater mLayoutInflater;
     private List<TravelExpense> mList;
     private TravelListItemClickListener mTravelListItemClickListener;
-    int clicked=0;
+    int clicked = -1;
 
     public BudgetStatusListAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -58,6 +58,9 @@ public class BudgetStatusListAdapter extends RecyclerView.Adapter<BudgetStatusLi
         if (item == null) {
             return;
         }
+        if (clicked == position) {
+            holder.viewHolder.setVisibility(View.VISIBLE);
+        } else holder.viewHolder.setVisibility(View.INVISIBLE);
         holder.currency.setText(MyConst.getCurrencyCode(item.getCurrency()).value);
         holder.budget.setText(MyString.getMoneyText(item.getPlaceLat()));
         holder.expenses.setText(item.getAmountText());
@@ -76,6 +79,7 @@ public class BudgetStatusListAdapter extends RecyclerView.Adapter<BudgetStatusLi
         private final TextView budget;
         private final TextView expenses;
         private final TextView balance;
+        private final View viewHolder;
 
         private TravelViewHolder(View v) {
             super(v);
@@ -83,17 +87,19 @@ public class BudgetStatusListAdapter extends RecyclerView.Adapter<BudgetStatusLi
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (clicked!=1){
+                        if (clicked != getAdapterPosition()) {
                             mTravelListItemClickListener.onListItemClick(v
                                     , getAdapterPosition()
                                     , getItem(getAdapterPosition()), false);
-                            clicked++;
+                            clicked = getAdapterPosition();
+                            notifyDataSetChanged();
                         }
                         else {
                             mTravelListItemClickListener.onListItemClick(v
                                     , -1
                                     , new TravelExpense(), false);
-                            clicked=0;
+                            clicked = -1;
+                            notifyDataSetChanged();
                         }
                     }
                 });
@@ -102,6 +108,8 @@ public class BudgetStatusListAdapter extends RecyclerView.Adapter<BudgetStatusLi
             budget = v.findViewById(R.id.budget);
             expenses = v.findViewById(R.id.expenses);
             balance = v.findViewById(R.id.balance);
+            viewHolder = v.findViewById(R.id.view_holder);
+
         }
     }
 }

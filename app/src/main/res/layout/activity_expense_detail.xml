@@ -23,6 +23,12 @@
             app:titleEnabled="false"
             app:toolbarId="@+id/toolbar">
 
+            <View
+                android:alpha="0.5"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></View>
+
             <include
                 layout="@layout/activity_expense_detail_edit_content"
                 android:layout_width="match_parent"

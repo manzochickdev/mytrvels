@@ -96,7 +96,9 @@
         </provider>
 
         <activity android:name=".traveldetail.TravelTimelineMapActivity" />
-        <activity android:name=".discovery.DiscoveryActivity"></activity>
+        <activity android:name=".discovery.DiscoveryActivity" />
+        <activity android:name=".overview.OverviewActivity" />
+        <activity android:name=".weather.WeatherActivity"></activity>
     </application>
 
 </manifest>

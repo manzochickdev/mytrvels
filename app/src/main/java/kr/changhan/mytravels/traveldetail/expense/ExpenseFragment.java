@@ -104,6 +104,7 @@ public class ExpenseFragment extends TravelDetailBaseFragment implements TravelL
         Intent intent = new Intent(getContext(), ExpenseDetailActivity.class);
         intent.putExtra(MyConst.REQKEY_TRAVEL, item);
         intent.putExtra("CURRENCY",currency);
+        intent.putExtra(MyConst.BACKGROUND, travel.getThumb());
         startActivity(intent);
     }
 
@@ -112,10 +113,17 @@ public class ExpenseFragment extends TravelDetailBaseFragment implements TravelL
         TravelExpense item = (TravelExpense) entity;
         Log.d(TAG, "onListItemClick: item=" + item);
         Log.d(TAG, "onListItemClick: longClick=" + longClick);
+
+
+        Travel travel = mViewModel.getTravel().getValue();
+        if (travel == null) return;
+
+
         if (!longClick) return;
         Intent intent = new Intent(getContext(), ExpenseDetailActivity.class);
         intent.putExtra(MyConst.REQKEY_TRAVEL, item);
         intent.putExtra("CURRENCY",currency);
+        intent.putExtra(MyConst.BACKGROUND, travel.getThumb());
         startActivity(intent);
     }
 

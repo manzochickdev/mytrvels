@@ -51,12 +51,7 @@ public class TravelPlanListAdapter extends PagedListAdapter<TravelPlan, TravelPl
             return;
         }
 
-        if (!item.getDateTime().substring(2,8).equals(header)){
-            header = item.getDateTime().substring(2,8);
-            holder.headerTxt.setText(header);
-            holder.headerTxt.setVisibility(View.VISIBLE);
-        }
-        else {holder.headerTxt.setVisibility(View.GONE);}
+        holder.headerTxt.setVisibility(View.GONE);
 
         holder.dateTxt.setText(item.getDateTimeMinText());
         holder.titleTxt.setText(item.getTitle());
@@ -165,18 +160,6 @@ public class TravelPlanListAdapter extends PagedListAdapter<TravelPlan, TravelPl
 
         }
 
-        public void bind(TravelPlan item) {
-            dateTxt.setText(item.getDateTimeMinText());
-            titleTxt.setText(item.getTitle());
-            descTxt.setText(item.getDesc());
-            if (MyString.isNotEmpty(item.getPlaceName())) {
-                placeTxt.setText(item.getPlaceName());
-                placeTxt.setVisibility(View.VISIBLE);
-            } else {
-                placeTxt.setVisibility(View.GONE);
-            }
-            ratingBar.setRating(item.getRating());
-        }
     }
 
     @Nullable

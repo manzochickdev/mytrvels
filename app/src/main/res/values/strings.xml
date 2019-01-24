@@ -62,7 +62,10 @@
     <string name="btn_hotels">Hotels</string>
     <string name="btn_attractions">Attractions</string>
     <string name="main_hot_place">How about a trip to Hanoi?</string>
+    <string name="Today">Today</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="remind">You have upcoming plans!</string>
+
 </resources>
